@@ -1,0 +1,33 @@
+# ===== Build directories =====
+build/
+asanproject/
+myproject/
+ex/
+
+# ===== Compiled artifacts =====
+*.o
+*.obj
+*.exe
+*.out
+*.a
+*.so
+*.dylib
+
+# ===== CMake =====
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# ===== Sanitizers / profiling =====
+*.prof
+*.gcda
+*.gcno
+
+# ===== IDE / editor =====
+.vscode/
+.idea/
+
+# ===== OS junk =====
+.DS_Store
+Thumbs.db
