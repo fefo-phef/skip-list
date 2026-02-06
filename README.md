@@ -24,6 +24,51 @@ This project was developed as a learning exercise in:
 - Template-based library development
 - Probabilistic data strucures
 
+## Building
+
+Requirements:
+
+- C++ 17 compatible compiler
+- CMake ≥ 3.16
+
+Build instructions:
+
+```
+git clone https://github.com/fefo-phef/skip-list.git
+cd skip-list
+
+mkdir build
+cd build
+
+cmake ..
+cmake --build .
+```
+
+Running the example:
+
+```
+./skiplist_basic
+```
+
+Cleaning the build:
+
+```
+rm -rf build
+```
+
+Using the library in another CMake project:
+
+```
+add_subdirectory(skip-list)
+target_link_libraries(my_app skiplist)
+```
+
+Then in code:
+
+```
+#include <skiplist.h>
+```
+
 ## References
 
 - Bjarne Stroustrup, *Programming: Principles and Practice using C++*
