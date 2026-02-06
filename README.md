@@ -1,0 +1,30 @@
+# Skip List
+
+A C++ implementation of the **Skip List** data structure: an efficient ordered dynamic list with probabilistic balancing.
+
+This project focuses on correctness, performance considerations, and clean container-style API design inspired by the C++ Standard Library.
+
+## Overview
+
+A **skip list** is a randomized data structure that maintains elements in sorted order and supports efficient search, insertion, and deletion in expected **O(log n)** time.
+
+This implementation aims to provide:
+
+- A reusable generic container
+- STL-style interface and iterators
+- Efficient memory management through a custom memory pool
+- Conditional use of trivial destruction optimisations
+
+## Motivation
+
+This project was developed as a learning exercise in:
+
+- Modern C++ container design
+- Memory management and allocator strategies
+- Template-based library development
+- Probabilistic data strucures
+
+## References
+
+- Bjarne Stroustrup, *Programming: Principles and Practice using C++*
+- Dmitry Soshnikov, *[Writing a Pool Allocator](https://dmitrysoshnikov.com/compilers/writing-a-pool-allocator/)*
