@@ -5,7 +5,7 @@
 template<typename T, size_t max_layer, typename Compare>
 SkipList<T, max_layer, Compare>::SkipList(std::initializer_list<T> lst) : SkipList() {
     for (const T& element : lst) {
-        Insert(element);
+        insert(element);
     }
 }
 
@@ -18,9 +18,10 @@ SkipList<T, max_layer, Compare>& SkipList<T, max_layer, Compare>::operator=(std:
         pool_.Deallocate(current);
         current = next;
     }
+    elements = 0;
 
     for (const T& element : lst) {
-        Insert(element);
+        insert(element);
     }
 
     return *this;
@@ -31,7 +32,7 @@ SkipList<T, max_layer, Compare>& SkipList<T, max_layer, Compare>::operator=(std:
 template<typename T, size_t max_layer, typename Compare>
 SkipList<T, max_layer, Compare>::SkipList(const SkipList& slist) {
     for (auto element : slist) {
-        Insert(element);
+        insert(element);
     }
 }
 
@@ -46,10 +47,11 @@ SkipList<T, max_layer, Compare>& SkipList<T, max_layer, Compare>::operator=(cons
             current = next;
         }
         current_max = 1;
+        elements = 0;
         head_ = LinkHead{};
 
         for (auto element : slist) {
-            Insert(element);
+            insert(element);
         }
     }
 
@@ -59,7 +61,7 @@ SkipList<T, max_layer, Compare>& SkipList<T, max_layer, Compare>::operator=(cons
 
 
 template<typename T, size_t max_layer, typename Compare>
-SkipList<T, max_layer, Compare>::SkipList(SkipList&& other) : pool_{std::move(other.pool_)}, comp_{std::move(other.comp_)}, current_max{other.current_max}, head_{other.head_} {
+SkipList<T, max_layer, Compare>::SkipList(SkipList&& other) : pool_{std::move(other.pool_)}, comp_{std::move(other.comp_)}, current_max{other.current_max}, elements{other.elements}, head_{other.head_} {
     other.head_ = LinkHead{};
 }
 
@@ -78,6 +80,7 @@ SkipList<T, max_layer, Compare>& SkipList<T, max_layer, Compare>::operator=(Skip
         pool_ = std::move(other.pool_);
         comp_ = std::move(other.comp_);
         current_max = other.current_max;
+        elements = other.elements;
         head_ = other.head_;
 
         other.head_ = LinkHead{};
@@ -114,10 +117,11 @@ int SkipList<T, max_layer, Compare>::CoinToss() {
 
 template<typename T, size_t max_layer, typename Compare>
 template<typename... Args>
-void SkipList<T, max_layer, Compare>::Insert(Args&&... arguments) {
+void SkipList<T, max_layer, Compare>::insert(Args&&... arguments) {
     int layer = CoinToss() + 1;
     if (layer > max_layer) {layer = max_layer;}
     if (layer > current_max) {current_max = layer;}
+    ++elements;
 
     void* mem = pool_.Allocate();
     Link* newcomer = new (mem) Link(std::forward<Args>(arguments)...);
@@ -133,7 +137,7 @@ void SkipList<T, max_layer, Compare>::Insert(Args&&... arguments) {
 }
 
 template<typename T, size_t max_layer, typename Compare>
-bool SkipList<T, max_layer, Compare>::Find(const T& find_value) const {
+bool SkipList<T, max_layer, Compare>::find(const T& find_value) const {
     const LinkHead* current = &head_;
 
     for (int i = current_max - 1; i >= 0; i--) {
@@ -152,7 +156,7 @@ bool SkipList<T, max_layer, Compare>::Find(const T& find_value) const {
 }
 
 template<typename T, size_t max_layer, typename Compare>
-void SkipList<T, max_layer, Compare>::Remove(const T& remove_value) {
+void SkipList<T, max_layer, Compare>::remove(const T& remove_value) {
     LinkHead* current = &head_;
     for (int i = current_max - 1; i >= 0; i--) {
         for (; current->succ[i]; current = current->succ[i]) {
@@ -171,6 +175,7 @@ void SkipList<T, max_layer, Compare>::Remove(const T& remove_value) {
                 }
                 static_cast<Link*>(to_delete)->~Link();
                 pool_.Deallocate(to_delete);
+                --elements;
                 return;
             }
         }
@@ -180,7 +185,14 @@ void SkipList<T, max_layer, Compare>::Remove(const T& remove_value) {
 
 
 template<typename T, size_t max_layer, typename Compare>
-void SkipList<T, max_layer, Compare>::Print(std::ostream& os) const {
+size_t SkipList<T, max_layer, Compare>::size() {
+    return elements;
+}
+
+
+
+template<typename T, size_t max_layer, typename Compare>
+void SkipList<T, max_layer, Compare>::print(std::ostream& os) const {
     int high = current_max - 1;
 
     for (; high > 0; high--) {

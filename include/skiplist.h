@@ -35,9 +35,10 @@
 
     Compare comp_{};
 
-    // this might actually not always correspond to the current maximum layer, since it does not get updated in Remove
+    // this might actually not always correspond to the current maximum layer, since it does not get updated in remove
     // in the vast majority of cases, this barely impacts performance
     size_t current_max = 1;
+    size_t elements = 0;
 
     LinkHead head_{};
 
@@ -74,17 +75,18 @@
     Iterator begin()  {return Iterator(head_.succ[0]);}
     Iterator begin() const  {return Iterator(head_.succ[0]);}
 
-
     Iterator end() {return Iterator(nullptr);}
     Iterator end() const {return Iterator(nullptr);}
 
     template<typename... Args>
-    void Insert(Args&&... arguments);
+    void insert(Args&&... arguments);
 
-    bool Find(const T&) const;
-    void Remove(const T&);
+    bool find(const T&) const;
+    void remove(const T&);
 
-    void Print(std::ostream& os = std::cout) const;
+    size_t size();
+
+    void print(std::ostream& os = std::cout) const;
  };
 
  #include "skiplist.tpp"
