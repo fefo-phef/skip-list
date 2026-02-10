@@ -107,9 +107,9 @@ SkipList<T, max_layer, Compare>::~SkipList() {
 
 template<typename T, size_t max_layer, typename Compare>
 int SkipList<T, max_layer, Compare>::CoinToss() {
-    static thread_local std::random_device rd;
-    static thread_local std::mt19937 gen(rd());
-    std::geometric_distribution<int> dist(0.5);
+    thread_local std::random_device rd;
+    thread_local std::mt19937 gen(rd());
+    std::geometric_distribution<int> dist(0.25);
     return dist(gen);
 }
 

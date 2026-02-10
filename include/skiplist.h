@@ -10,7 +10,7 @@
 #include <iostream>
 #include "memorytools.h"
 
- template<typename T, size_t max_layer = 20, typename Compare = std::less<T>>
+ template<typename T, size_t max_layer = 10, typename Compare = std::less<T>>
  class SkipList {
 
     // we use a separate struct for the head of the list, since it will not hold any values, and T might not be default constructable
